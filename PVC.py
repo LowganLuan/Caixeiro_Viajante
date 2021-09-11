@@ -5,7 +5,11 @@ text = []  #Vetor para receber o txt
 distance_matrix = [] #declaro um segundo vetor
 cities = []
 text = arq.readlines() #quebra as linhas do arquivo em vetores
-
+distances = []
+distances1 = []
+distances2 = []
+count = 0
+textconcat = "a"
 
 for i in range(len(text)):          #esse for percorre a posições dp vetor texto
     distance_matrix.append(text[i].split())  #aqui eu quebro nos espasos das palavras
@@ -18,17 +22,19 @@ for n, i in enumerate(distance_matrix):
         distance_matrix[n][k] = int(j)
 
 
-def funcao_objetivo(solution):
+def funcao_objetivo(solution, file, textconcat):
     distancie = 0
     for i in range(0, len(solution) - 1):
         x = solution[i]
         y = solution[i + 1]
         distance_cities = distance_matrix[x][y]
         distancie = distancie + distance_cities
+
     return distancie + distance_matrix[solution[len(solution) - 1]][solution[0]]
 
 
-def algoritmo_aleatorio():
+def algoritmo_aleatorio(file):
+
     solution = []
     c_cities = []
 
@@ -41,10 +47,12 @@ def algoritmo_aleatorio():
         del c_cities[index]
         solution.append(s_cities)
 
-    print("Solução final :", solution, " Distancia = ", funcao_objetivo(solution))
+    printt = str(funcao_objetivo(solution, file, textconcat))
+    distances.append(printt)
+    print("Solução final :", solution, " Distancia = ", printt )
 
 
-def algoritmo_guloso():
+def algoritmo_guloso(file):
     solution = []
     c_cities = []
 
@@ -72,11 +80,12 @@ def algoritmo_guloso():
             i = i + 1
         solution.append(c_cities[n_citie_index])
         del c_cities[n_citie_index]
+    printt = str(funcao_objetivo(solution, file, textconcat))
+    distances1.append(printt)
+    print("Solução final :", solution, " Distancia = ", printt )
 
-    print("Solução final :", solution, " Distancia = ", funcao_objetivo(solution))
 
-
-def algoritmo_semi_guloso():
+def algoritmo_semi_guloso(file):
     solution = []
     c_citie = []
     delta = 70
@@ -113,19 +122,36 @@ def algoritmo_semi_guloso():
             del c_citie[index]
             solution.append(s_citie)
 
-    print("Solução final :", solution, " Distancia = ", funcao_objetivo(solution))
+    printt = str(funcao_objetivo(solution, file, textconcat))
+    distances2.append(printt)
+    print("Solução final :", solution, " Distancia = ", printt )
 
-#execucao = 30
-#while execucao > 0:
-#    algoritmo_aleatorio()
-#    execucao -= 1
 
-#execucao = 30
-#while execucao > 0:
-#    algoritmo_guloso()
-#    execucao -= 1
 
 execucao = 30
+file = open("aleatorio.txt", "w")
 while execucao > 0:
-    algoritmo_semi_guloso()
+    algoritmo_aleatorio(file)
     execucao -= 1
+
+textconcat0 = " ".join(distances)
+file.write(textconcat0)
+
+
+execucao = 30
+file2 = open("guloso.txt", "w")
+while execucao > 0:
+    algoritmo_guloso(file2)
+    execucao -= 1
+
+textconcat1 = " ".join(distances1)
+file2.write(textconcat1)
+
+execucao = 30
+file3 = open("semi_guloso.txt", "w")
+while execucao > 0:
+    algoritmo_semi_guloso(file3)
+    execucao -= 1
+
+textconcat2 = " ".join(distances2)
+file3.write(textconcat2)
